@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+# pypdf -> removing pypdf in favor of pymupdf? Or keep both? PyMuPDF is superior.
+pypdf 
+pymupdf
+genanki
+openai
+pydantic
+langchain
+langchain-community
+langchain-openai
+langgraph
+langsmith
+python-dotenv
