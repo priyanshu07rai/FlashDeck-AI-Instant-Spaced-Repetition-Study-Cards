@@ -149,7 +149,7 @@ TOPICS:
 • ${topics}`;
 
     try {
-      const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch('http://localhost:8001/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: prompt }),
@@ -220,7 +220,7 @@ TOPICS:
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/generate', {
+      const response = await fetch('http://localhost:8001/generate', {
         method: 'POST',
         body: formData,
       });
