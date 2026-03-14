@@ -80,7 +80,8 @@ const ChatInterface = forwardRef((props, ref) => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:8001/chat', {
+            const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
+            const response = await fetch(`${baseUrl}/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

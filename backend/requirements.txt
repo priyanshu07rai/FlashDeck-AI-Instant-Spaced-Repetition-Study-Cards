@@ -13,3 +13,5 @@ langchain-openai
 langgraph
 langsmith
 python-dotenv
+gunicorn
+uvicorn[standard]

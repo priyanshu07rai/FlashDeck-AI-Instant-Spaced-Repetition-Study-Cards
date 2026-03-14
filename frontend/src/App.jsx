@@ -149,7 +149,8 @@ TOPICS:
 • ${topics}`;
 
     try {
-      const response = await fetch('http://localhost:8001/chat', {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
+      const response = await fetch(`${baseUrl}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: prompt }),
@@ -220,7 +221,8 @@ TOPICS:
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8001/generate', {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
+      const response = await fetch(`${baseUrl}/generate`, {
         method: 'POST',
         body: formData,
       });

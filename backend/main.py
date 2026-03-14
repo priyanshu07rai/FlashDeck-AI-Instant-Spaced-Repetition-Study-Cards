@@ -6,6 +6,8 @@ from deck_builder import create_anki_deck
 from pydantic import BaseModel
 import shutil
 import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI(title="FlashDeck AI API")
 
@@ -19,11 +21,32 @@ class ChatRequest(BaseModel):
 # Allow CORS for React Frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=["*"], # More permissive for easier deployment initially
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve Frontend Static Files
+frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+if os.path.exists(frontend_dist):
+    app.mount("/assets", StaticFiles(directory=os.path.join(frontend_dist, "assets")), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        # Exclude API routes from catch-all
+        if full_path.startswith("generate") or full_path.startswith("chat") or full_path == "":
+            if full_path == "":
+                return FileResponse(os.path.join(frontend_dist, "index.html"))
+            return None # Proceed to next handler
+
+        file_path = os.path.join(frontend_dist, full_path)
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            return FileResponse(file_path)
+        
+        return FileResponse(os.path.join(frontend_dist, "index.html"))
+else:
+    print(f"WARNING: Frontend dist not found at {frontend_dist}")
 
 @app.get("/")
 def home():
